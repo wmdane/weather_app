@@ -39,7 +39,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <h3 class="cityNameDate">Find the weather in your city!</h3>
+                <h3 class="find-city">Find the weather in your city!</h3>
               </div>
             </div>
           </div>
@@ -47,6 +47,11 @@
       </div>
     </div>
     <!-- Script begins here -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+      integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(".btn").on("click", function () {
@@ -56,15 +61,66 @@
         //variable to insert into the query URL to pull the correct data set
         var city = searchText;
         //Now define the URL we're using to talk to the database
-        var queryURL = "api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + APIKey;
+        var queryURL =
+          "https://api.openweathermap.org/data/2.5/weather?q=" +
+          city +
+          "&appid=" +
+          APIKey +
+          "&units=imperial";
         //Ajax Call
         $.ajax({
           url: queryURL,
           method: "GET",
         }).then(function (response) {
           console.log(response);
+          //set up divs to insert new info into, then append those to the card body
+          var cardBody = $(".card-body");
+          var cityNameDate = $("<h3>");
+          //temperature <p>
+          var tempDiv = $("<p>");
+          var temp = response.main.temp;
+          tempDiv.text("Temperature: " + temp + "°F");
+          //humidity
+          var humidDiv = $("<p>");
+          humidDiv.text("Humidity: " + response.main.humidity);
+          //wind speed
+          var windDiv = $("<p>");
+          windDiv.text("Wind Speed: " + response.wind.speed + " MPH");
+          //
+          //remove the "Find the weather in your city" text
+          cardBody.empty();
+          //add city name, date, and current weather icon
+          cityNameDate.text(
+            response.name + " (" + moment().format("l") + ")" + response.weather[0].icon ////////COME BACK TO FIX THIS
+          );
+
+          //append everything
+          cardBody.append(cityNameDate, tempDiv, humidDiv, windDiv);
+          fiveDay();
         });
       });
+      //function to call the forcast api
+      function fiveDay() {
+        //First define the API key
+        var APIKey = "2cc514a953dcebe642cacc9f80f42e25";
+        //define what city we are searching for
+        var searchText = $("#searchbox").val().trim();
+        var city = searchText;
+        //Now define the URL we're using to talk to the database
+        var queryURL =
+          "https://api.openweathermap.org/data/2.5/forcast?q=" +
+          city +
+          "&appid=" +
+          APIKey +
+          "&units=imperial";
+        //Ajax call
+        $.ajax({
+          url: queryURL,
+          method: "GET",
+        }).then(function (response) {
+          console.log(response);
+        });
+      }
     </script>
   </body>
 </html>
