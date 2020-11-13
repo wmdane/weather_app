@@ -1,0 +1,13 @@
+.header {
+  text-align: center;
+  color: antiquewhite;
+  font-size: large;
+}
+
+.searchSection {
+  background-color: whitesmoke;
+}
+
+.card {
+  margin-top: 20px;
+}
