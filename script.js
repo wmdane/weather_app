@@ -166,15 +166,14 @@ function fiveDay() {
     $(".day-four-card").append(dayFour);
     $(".day-five-card").append(dayFive);
   });
-  var cityHistory = searchText;
-
-  localStorage.setItem("city", cityHistory);
+  var cityHistory = [];
+  cityHistory.push(searchText);
+  localStorage.setItem("city", JSON.stringify(cityHistory));
 
   for (i = 0; i < cityHistory.length; i++) {
-    var pastSearch = localStorage.getItem(cityHistory[i]);
     var cityButton = $("<button>");
     cityButton.addClass("btn btn-primary");
-    cityButton.text(pastSearch);
-    $(".col-3 searchSection").append(cityButton);
+    cityButton.text(localStorage.getItem(cityHistory[i]));
+    $(".searchSection").append(cityButton);
   }
 }
