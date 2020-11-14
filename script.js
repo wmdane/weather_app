@@ -20,6 +20,11 @@ $(".btn").on("click", function () {
     //set up divs to insert new info into, then append those to the card body
     var cardBody = $(".card-body");
     var cityNameDate = $("<h3>");
+    //icon
+    var mainIcon = $("<img>");
+    var mainWeatherCode = response.weather[0].icon;
+    mainIcon.attr("src", "http://openweathermap.org/img/w/" + mainWeatherCode + ".png");
+    mainIcon.attr("width", "50px");
     //temperature <p>
     var tempDiv = $("<p>");
     var temp = response.main.temp;
@@ -39,7 +44,7 @@ $(".btn").on("click", function () {
     );
 
     //append everything
-    cardBody.append(cityNameDate, tempDiv, humidDiv, windDiv);
+    cardBody.append(cityNameDate, mainIcon, tempDiv, humidDiv, windDiv);
     fiveDay();
   });
 });
@@ -125,12 +130,35 @@ function fiveDay() {
     var humFive = $("<p>");
     humFive.text("Hum: " + response.list[35].main.humidity + "%");
 
+    //icons
+    var weatherCodeOne = response.list[3].weather[0].icon;
+    var weatherCodeTwo = response.list[11].weather[0].icon;
+    var weatherCodeThree = response.list[19].weather[0].icon;
+    var weatherCodeFour = response.list[27].weather[0].icon;
+    var weatherCodeFive = response.list[35].weather[0].icon;
+
+    var iconOne = $("<img>");
+    iconOne.attr("src", "http://openweathermap.org/img/w/" + weatherCodeOne + ".png");
+    iconOne.attr("width", "40px");
+    var iconTwo = $("<img>");
+    iconTwo.attr("src", "http://openweathermap.org/img/w/" + weatherCodeTwo + ".png");
+    iconTwo.attr("width", "40px");
+    var iconThree = $("<img>");
+    iconThree.attr("src", "http://openweathermap.org/img/w/" + weatherCodeThree + ".png");
+    iconThree.attr("width", "40px");
+    var iconFour = $("<img>");
+    iconFour.attr("src", "http://openweathermap.org/img/w/" + weatherCodeFour + ".png");
+    iconFour.attr("width", "40px");
+    var iconFive = $("<img>");
+    iconFive.attr("src", "http://openweathermap.org/img/w/" + weatherCodeFive + ".png");
+    iconFive.attr("width", "40px");
+
     //add info into the dayx divs
-    dayOne.append(dateOne, tempOne, humOne);
-    dayTwo.append(dateTwo, tempTwo, humTwo);
-    dayThree.append(dateThree, tempThree, humThree);
-    dayFour.append(dateFour, tempFour, humFour);
-    dayFive.append(dateFive, tempFive, humFive);
+    dayOne.append(dateOne, iconOne, tempOne, humOne);
+    dayTwo.append(dateTwo, iconTwo, tempTwo, humTwo);
+    dayThree.append(dateThree, iconThree, tempThree, humThree);
+    dayFour.append(dateFour, iconFour, tempFour, humFour);
+    dayFive.append(dateFive, iconFive, tempFive, humFive);
     //append the cards
     $(".day-one-card").append(dayOne);
     $(".day-two-card").append(dayTwo);
@@ -138,8 +166,8 @@ function fiveDay() {
     $(".day-four-card").append(dayFour);
     $(".day-five-card").append(dayFive);
   });
-  var cityHistory = [];
-  cityHistory.push(searchText);
+  var cityHistory = searchText;
+
   localStorage.setItem("city", cityHistory);
 
   for (i = 0; i < cityHistory.length; i++) {
