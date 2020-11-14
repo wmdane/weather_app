@@ -44,6 +44,16 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12 five-day-row"></div>
+        </div>
+        <div class="row forecast-row">
+          <div class="col-2 day-one-card"></div>
+          <div class="col-2 day-two-card"></div>
+          <div class="col-2 day-three-card"></div>
+          <div class="col-2 day-four-card"></div>
+          <div class="col-2 day-five-card"></div>
+        </div>
       </div>
     </div>
     <!-- Script begins here -->
@@ -53,6 +63,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <script type="text/javascript">
       $(".btn").on("click", function () {
         //First define the API key
@@ -91,7 +102,7 @@
           cardBody.empty();
           //add city name, date, and current weather icon
           cityNameDate.text(
-            response.name + " (" + moment().format("l") + ")" + response.weather[0].icon ////////COME BACK TO FIX THIS
+            response.name + " (" + moment().format("l") + ")" ////////COME BACK TO FIX THIS
           );
 
           //append everything
@@ -108,17 +119,75 @@
         var city = searchText;
         //Now define the URL we're using to talk to the database
         var queryURL =
-          "https://api.openweathermap.org/data/2.5/forcast?q=" +
+          "https://api.openweathermap.org/data/2.5/forecast?q=" +
           city +
           "&appid=" +
           APIKey +
-          "&units=imperial";
+          "&units=imperial&exclude=hourly,minutely";
         //Ajax call
         $.ajax({
           url: queryURL,
           method: "GET",
         }).then(function (response) {
           console.log(response);
+          //clear previous search data
+          $(".five-day-row").empty();
+          $(".day-one-card").empty();
+          $(".day-two-card").empty();
+          $(".day-three-card").empty();
+          $(".day-four-card").empty();
+          $(".day-five-card").empty();
+
+          var forecastText = $("<h3>");
+          forecastText.text("5-Day Forecast:");
+          $(".five-day-row").append(forecastText);
+
+          //define 5 day forecast cards and add classes and styles to get boxes
+          var dayOne = $("<div>");
+          var dayTwo = $("<div>");
+          var dayThree = $("<div>");
+          var dayFour = $("<div>");
+          var dayFive = $("<div>");
+          dayOne.addClass("card").attr("style", "width: 15rem");
+          dayTwo.addClass("card").attr("style", "width: 15rem");
+          dayThree.addClass("card").attr("style", "width: 15rem");
+          dayFour.addClass("card").attr("style", "width: 15rem");
+          dayFive.addClass("card").attr("style", "width: 15rem");
+
+          //set date variables with moment.js
+          var datePlusOne = response.list[3].dt_txt;
+          var datePlusTwo = response.list[11].dt_txt;
+          var datePlusThree = response.list[19].dt_txt;
+          var datePlusFour = response.list[27].dt_txt;
+          var datePlusFive = response.list[35].dt_txt;
+
+          //start adding info into the boxes
+          var dateOne = $("<h5>").text(datePlusOne);
+          var dateOne = $("<h5>").text(datePlusTwo);
+          var dateOne = $("<h5>").text(datePlusThree);
+          var dateOne = $("<h5>").text(datePlusFour);
+          var dateOne = $("<h5>").text(datePlusFive);
+
+          //temperature of each projected day at noon
+          var tempOne = $("<p>");
+          tempOne.text(response.list[3].main.temp + "°F");
+          var tempTwo = $("<p>");
+          tempTwo.text(response.list[11].main.temp + "°F");
+          var tempThree = $("<p>");
+          tempThree.text(response.list[19].main.temp + "°F");
+          var tempFour = $("<p>");
+          tempFour.text(response.list[27].main.temp + "°F");
+          var tempFive = $("<p>");
+          tempFive.text(response.list[35].main.temp + "°F");
+
+          //add info into the dayx divs
+          dayOne.append(dateOne);
+          //append the cards
+          $(".day-one-card").append(dayOne);
+          $(".day-two-card").append(dayTwo);
+          $(".day-three-card").append(dayThree);
+          $(".day-four-card").append(dayFour);
+          $(".day-five-card").append(dayFive);
         });
       }
     </script>
